@@ -1,10 +1,18 @@
-const express = require("express");
-const redis = require("redis");
+const express = require('express');
+const redis = require('redis');
 
 const app = express();
-const client = redis.createClient();
+
+// the docker recognises this redis-server, and redirects the route to the redis container
+const client = redis.createClient({
+    host: "redis-server",
+    port: 6379
+});
+
+
 client.set('visits', 0);
 
+console.log('entered here');
 
 app.get('/', (req, res) => {
     client.get('visits', (err, visits) => {
